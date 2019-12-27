@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils:getConfig accepts postgresql uri 1`] = `
+Array [
+  Object {
+    "application_name": "@synor/database-postgresql",
+    "database": "synor",
+    "host": "127.0.0.1",
+    "password": "postgres",
+    "port": 5432,
+    "ssl": false,
+    "user": "postgres",
+  },
+  Object {
+    "migrationRecordTable": "synor_migration_record",
+    "schema": "public",
+  },
+]
+`;
