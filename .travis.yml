@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - lts/carbon
+addons:
+  apt:
+    - postgresql-client
+cache:
+  directories:
+    - node_modules
+services:
+  - docker
+install:
+  - yarn
+before_script:
+  - docker-compose -f docker-compose.test.yml up -d
+script:
+  - jest --ci --coverage
+after_script:
+  - docker-compose down
+after_success:
+  - npx codecov
