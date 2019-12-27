@@ -13,7 +13,6 @@ async function waitForPostgreSQL() {
   try {
     pingPostgreSQL()
   } catch (_) {
-    console.log(_)
     await sleep(1000)
     return waitForPostgreSQL()
   }
