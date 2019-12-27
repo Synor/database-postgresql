@@ -1,6 +1,6 @@
 {
   "name": "@synor/database-postgresql",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Synor Database Engine - PostgreSQL",
   "keywords": [
     "synor",
