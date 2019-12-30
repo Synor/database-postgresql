@@ -41,7 +41,7 @@ export function getConfig(
       user,
       password,
       path,
-      params = {}
+      params
     } = new ConnectionString(uri, {
       params: {
         application_name: '@synor/database-postgresql',
@@ -64,7 +64,7 @@ export function getConfig(
       throw new Error('[URI] missing: database!')
     }
 
-    const sslParams: boolean | SSLParams = JSON.parse(params.ssl || false)
+    const sslParams: boolean | SSLParams = JSON.parse(params!.ssl || false)
 
     let ssl: boolean | SSLConfig
 
@@ -95,12 +95,12 @@ export function getConfig(
       user,
       password,
       ssl,
-      application_name: params.application_name
+      application_name: params!.application_name
     }
 
     const engineConfig: PostgreSQLEngineConfig = {
-      migrationRecordTable: params.synor_migration_record_table,
-      schema: params.schema
+      migrationRecordTable: params!.synor_migration_record_table,
+      schema: params!.schema
     }
 
     return [databaseConfig, engineConfig]
