@@ -105,6 +105,6 @@ export function getConfig(
 
     return [databaseConfig, engineConfig]
   } catch (error) {
-    throw new SynorError('Invalid DatabaseURI', error)
+    throw new SynorError('Invalid DatabaseURI', 'exception', error)
   }
 }

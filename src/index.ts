@@ -54,18 +54,16 @@ export const PostgreSQLDatabaseEngine: DatabaseEngineFactory = (
     try {
       await queryStore.getLock()
     } catch (_) {
-      throw new SynorError('Failed to Get Lock', {
-        lockId: advisoryLockIds
-      })
+      throw new SynorError(`Failed to Get Lock: ${advisoryLockIds.join(' ')}`)
     }
   }
 
   const unlock: DatabaseEngine['unlock'] = async () => {
     const lockResult = await queryStore.releaseLock()
     if (!lockResult) {
-      throw new SynorError('Failed to Release Lock', {
-        lockId: advisoryLockIds
-      })
+      throw new SynorError(
+        `Failed to Release Lock: ${advisoryLockIds.join(' ')}`
+      )
     }
   }
 
