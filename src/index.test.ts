@@ -25,7 +25,10 @@ const getTableColumnCount = async (
     .then(result => result.rows.length)
 }
 
-const migrationSource: Record<'01.do' | '01.undo', MigrationSource> = {
+const migrationSource: Record<
+  '01.do' | '01.undo' | '02.do',
+  MigrationSource
+> = {
   '01.do': {
     version: '01',
     type: 'do',
@@ -39,6 +42,15 @@ const migrationSource: Record<'01.do' | '01.undo', MigrationSource> = {
     title: 'Test One',
     body: 'SELEC -1;',
     hash: 'hash-01-undo'
+  },
+  '02.do': {
+    version: '02',
+    type: 'do',
+    title: 'Test Two',
+    hash: 'hash-02-do',
+    run: (client: Client) => {
+      return client.query(`SELECT 2;`)
+    }
   }
 }
 
@@ -334,9 +346,20 @@ describe('methods', () => {
     ).resolves.toBe(0)
   })
 
-  test('run', async () => {
+  test('run (with body)', async () => {
     await expect(engine.run(migrationSource['01.do'])).resolves.toBeUndefined()
     await expect(engine.run(migrationSource['01.undo'])).rejects.toThrow()
+
+    const { rows } = await client.query(
+      `SELECT * FROM ${schemaName}.${tableName};`
+    )
+    expect(rows).toMatchSnapshot()
+
+    await engine.drop()
+  })
+
+  test('run (with run)', async () => {
+    await expect(engine.run(migrationSource['02.do'])).resolves.toBeUndefined()
 
     const { rows } = await client.query(
       `SELECT * FROM ${schemaName}.${tableName};`

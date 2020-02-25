@@ -9,6 +9,8 @@ type DatabaseEngine = import('@synor/core').DatabaseEngine
 type DatabaseEngineFactory = import('@synor/core').DatabaseEngineFactory
 type MigrationSource = import('@synor/core').MigrationSource
 
+export type MigrationSourceContentRunner = (client: Client) => Promise<void>
+
 export const PostgreSQLDatabaseEngine: DatabaseEngineFactory = (
   uri,
   { baseVersion, getAdvisoryLockId, getUserInfo }
@@ -77,14 +79,19 @@ export const PostgreSQLDatabaseEngine: DatabaseEngineFactory = (
     type,
     title,
     hash,
-    body
+    body,
+    run
   }: MigrationSource) => {
     let dirty = false
 
     const startTime = performance.now()
 
     try {
-      await client.query(body)
+      if (body) {
+        await client.query(body)
+      } else {
+        await (run as MigrationSourceContentRunner)(client)
+      }
     } catch (err) {
       dirty = true
 

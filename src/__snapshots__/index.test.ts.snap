@@ -65,7 +65,7 @@ Array [
 ]
 `;
 
-exports[`methods run 1`] = `
+exports[`methods run (with body) 1`] = `
 Array [
   Object {
     "applied_at": 2020-01-01T00:00:00.000Z,
@@ -99,6 +99,33 @@ Array [
     "title": "Test One",
     "type": "undo",
     "version": "01",
+  },
+]
+`;
+
+exports[`methods run (with run) 1`] = `
+Array [
+  Object {
+    "applied_at": 2020-01-01T00:00:00.000Z,
+    "applied_by": "Synor",
+    "dirty": false,
+    "execution_time": 0,
+    "hash": "",
+    "id": 1,
+    "title": "Base Migration",
+    "type": "do",
+    "version": "0",
+  },
+  Object {
+    "applied_at": 2020-01-01T00:00:00.000Z,
+    "applied_by": "Jest",
+    "dirty": false,
+    "execution_time": 0,
+    "hash": "hash-02-do",
+    "id": 2,
+    "title": "Test Two",
+    "type": "do",
+    "version": "02",
   },
 ]
 `;
