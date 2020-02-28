@@ -13,7 +13,7 @@ type ColumnName =
   | 'execution_time'
   | 'dirty'
 
-type LockResult = boolean | undefined
+type LockResult = boolean | ''
 
 export type QueryStore = {
   openConnection: () => Promise<void>
@@ -227,7 +227,7 @@ export function getQueryStore(
         INSERT INTO ${tableName} (
           version, type, title, hash, applied_at, applied_by, execution_time, dirty
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8
+          $1, $2, $3, $4, $5, $6, $7::numeric::integer, $8
         );
       `,
       [version, type, title, hash, appliedAt, appliedBy, executionTime, dirty]
