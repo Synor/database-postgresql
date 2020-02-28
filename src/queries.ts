@@ -197,18 +197,33 @@ export function getQueryStore(
   }
 
   const getRecords: QueryStore['getRecords'] = (startId = 0) => {
-    return QueryRunner<MigrationRecord, MigrationRecord[]>(
+    return QueryRunner<
+      Omit<MigrationRecord, 'appliedAt' | 'appliedBy' | 'executionTime'> & {
+        applied_at: MigrationRecord['appliedAt']
+        applied_by: MigrationRecord['appliedBy']
+        execution_time: MigrationRecord['executionTime']
+      },
+      MigrationRecord[]
+    >(
       `
         SELECT
           id, version, type, title, hash,
-          applied_at AS appliedAt,
-          applied_by AS appliedBy,
-          execution_time AS executionTime,
+          applied_at, applied_by, execution_time,
           dirty
         FROM ${tableName}
         WHERE id >= $1;
       `,
-      [startId]
+      [startId],
+      rows => {
+        return rows.map(
+          ({ applied_at, applied_by, execution_time, ...record }) => ({
+            ...record,
+            appliedAt: applied_at,
+            appliedBy: applied_by,
+            executionTime: execution_time
+          })
+        )
+      }
     )()
   }
 
